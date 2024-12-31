@@ -1,3 +1,25 @@
+# # Openstack Credentials
+# variable "openstack_user_name" {
+#   description = "Openstack openstack_user_name"
+#   type        = string
+# }
+
+# variable "openstack_password" {
+#   description = "Openstack password"
+#   type        = string
+# }
+
+# variable "auth_url" {
+#   description = "Openstack authentication url"
+#   type        = string
+# }
+
+# variable "tenant_name" {
+#   description = "Openstack project name"
+#   type        = string
+# }
+
+# Network Variables
 variable "subnets" { # DHCP is turned off, unless a particular allocation pool is defined. 
   description = "Subnets to create for the project"
   type = map(object({
