@@ -1,20 +1,10 @@
-# Openstack credentials 
-variable "username" {
-  description = "Openstack Username"
-  type        = string
-}
+# Minimalstack Network Variables
+variable "subnets" { # DHCP is turned off, unless a particular allocation pool is defined. 
+  description = "Subnets to create for the project"
+  type = map(object({
+    cidr = string
 
-variable "password" {
-  description = "Openstack Password"
-  type        = string
-}
-
-variable "auth_url" {
-  description = "Openstack authentication url"
-  type        = string
-}
-
-variable "tenant_name" {
-  description = "Openstack project name"
-  type        = string
+    allocation_pool = optional(map(string)) # optional, sets an address range for dhcp.
+    dns_nameservers = optional(set(string))
+  }))
 }
