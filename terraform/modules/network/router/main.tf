@@ -43,14 +43,3 @@ resource "openstack_networking_router_interface_v2" "core_router_interfaces" {
   router_id = openstack_networking_router_v2.core_router.id
   subnet_id = openstack_networking_subnet_v2.core_router_subnets[each.key].id
 }
-
-resource "openstack_networking_port_v2" "core_router_ports" { # Create a port for the router on every subnet at the IP we defined above
-  for_each = var.subnets
-
-  name       = "${each.key} Core Router Port"
-  network_id = openstack_networking_network_v2.core_router_network.id
-  fixed_ip {
-    subnet_id  = openstack_networking_subnet_v2.core_router_subnets[each.key].id
-    ip_address = cidrhost(each.value.cidr, 254) # Same as above
-  }
-}
