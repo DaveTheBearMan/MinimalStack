@@ -27,7 +27,7 @@ variable "subnets" { # DHCP is turned off, unless a particular allocation pool i
   }))
 }
 
-variable "security_groups" {
+variable "security_group_instances" {
   description = "All of the security groups for the project"
   type        = map(string)
 }

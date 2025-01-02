@@ -2,7 +2,7 @@
 variable "openstack_user_name" {
   description = "Openstack openstack_user_name"
   type        = string
-  ephemeral   = true
+  ephemeral   = true # Ephemeral meaning available at run time, these variables are gathered from the environment.
 }
 
 variable "openstack_password" {
@@ -32,5 +32,15 @@ variable "subnets" { # DHCP is turned off, unless a particular allocation pool i
 
     allocation_pool = optional(map(string)) # optional, sets an address range for dhcp.
     dns_nameservers = optional(set(string))
+  }))
+}
+
+# Security groups
+variable "security_groups" {
+  description = "Security groups to create"
+  type = map(object({
+    description = optional(string)
+    tcp_rules   = optional(set(number), [])
+    udp_rules   = optional(set(number), [])
   }))
 }
