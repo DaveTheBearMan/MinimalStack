@@ -8,3 +8,4 @@ module "minimalstack_router" { # Creates router, subnets, and port for router on
   subnets                  = var.subnets
   security_group_instances = var.security_group_instances
 }
+
