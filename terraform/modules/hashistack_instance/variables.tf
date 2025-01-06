@@ -1,10 +1,17 @@
-# Instances..? 
+# Security group ids from the network module 
+variable "security_group_ids" {
+  description = "Security group id output"
+  type        = map(string)
+}
+
+# Instance to create 
 variable "instance" {
   description = "Instance to create"
   type = object({
     # Required parameters
     name = string
     description = string
+    count = number
 
     # Block instance parameters
     block_size = number
@@ -12,13 +19,16 @@ variable "instance" {
   
     # Compute instance parameters
     flavor_id = string
+    inherited_tags = optional(set(string))
     tags = optional(set(string))
 
     # Security parameters
     security_groups = optional(set(string))
 
     # Network paramters
-    subnet = optional(string)
+    network_id = string
+    subnet_id = string
+    fixed_ip = optional(string)
 
     # Userdata
     user_data = optional(object({
