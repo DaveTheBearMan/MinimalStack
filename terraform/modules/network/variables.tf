@@ -1,33 +1,7 @@
-# # Openstack Credentials
-# variable "openstack_user_name" {
-#   description = "Openstack openstack_user_name"
-#   type        = string
-# }
-
-# variable "openstack_password" {
-#   description = "Openstack password"
-#   type        = string
-# }
-
-# variable "auth_url" {
-#   description = "Openstack authentication url"
-#   type        = string
-# }
-
-# variable "tenant_name" {
-#   description = "Openstack project name"
-#   type        = string
-# }
-
 # Network Variables
 variable "subnets" { # DHCP is turned off, unless a particular allocation pool is defined. 
-  description = "Subnets to create for the project"
-  type = map(object({
-    cidr = string
-
-    allocation_pool = optional(map(string)) # optional, sets an address range for dhcp.
-    dns_nameservers = optional(set(string))
-  }))
+  description = "Subnets to create for the project (path to yaml file)"
+  type = string
 }
 
 variable "security_group_instances" {
@@ -40,10 +14,6 @@ variable "security_group_instances" {
 
 # Security groups
 variable "security_groups" {
-  description = "Security groups to create"
-  type = map(object({
-    description = optional(string)
-    tcp_rules   = optional(set(number), [])
-    udp_rules   = optional(set(number), [])
-  }))
+  description = "Security groups to create (path to yaml file)"
+  type = string
 }

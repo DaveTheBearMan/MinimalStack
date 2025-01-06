@@ -3,7 +3,7 @@ output "security_group_instances" {
   description = "Security group instance ids"
   value = merge(
     {
-      for security_group_name, security_group_data in var.security_groups :
+      for security_group_name, security_group_data in local.security_group_decoded :
       security_group_name => openstack_networking_secgroup_v2.security_groups[security_group_name].id
     },
     {

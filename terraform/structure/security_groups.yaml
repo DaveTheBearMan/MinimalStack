@@ -1,0 +1,62 @@
+---
+Boundary Controller:
+  description: 'Security policy for boundary controller'
+  rules:
+    - port: 9200
+    - port: 9201
+
+Boundary Worker:
+  description: 'Security policy for boundary worker'
+  rules:
+    - port: 9202
+
+PostgreSQL:
+  description: 'Security policy for PostgreSQL database'
+  rules:
+    - port: 5432
+
+SSH:
+  description: 'SSH Security policy'
+  rules:
+    - port: 22
+
+Web:
+  description: 'Security policy for boundary controller'
+  rules:
+    - port: 80
+    - port: 443
+
+Envoy Proxy:
+  description: 'Envoy proxy security policies'
+  rules:
+    - port: 9901
+    - port: 15000
+    - port: 15001
+    - port: 15006
+
+Allow DMZ Subnet: # 0 for port is allow all ports
+  description: 'Allow traffic from DMZ subnet'
+  rules:
+    - port: 0
+      protocol: 'tcp'
+    - port: 0
+      protocol: 'udp'
+  remote_ip_prefix: '10.0.1.0/24'
+
+Allow Internal Subnet:
+  description: 'Allow traffic from internal subnet'
+  rules:
+    - port: 0
+      protocol: 'tcp'
+    - port: 0
+      protocol: 'udp'
+  remote_ip_prefix: '10.0.2.0/24'
+
+Allow Nomad Subnet: 
+  description: 'Allow traffic from nomad subnet'
+  rules:
+    - port: 0
+      protocol: 'tcp'
+    - port: 0
+      protocol: 'udp'
+  remote_ip_prefix: '10.0.3.0/24'

@@ -1,11 +1,14 @@
 # 
+locals {
+  security_group_decoded = yamldecode(file(var.security_groups))
+}
 data "openstack_identity_project_v3" "minimalstack" {
   name = "VulnerabilityResearch"
 }
 
 # Create security group
 resource "openstack_networking_secgroup_v2" "security_groups" {
-  for_each = var.security_groups
+  for_each = local.security_group_decoded
 
   tenant_id   = data.openstack_identity_project_v3.minimalstack.id
   name        = "Minimal Stack Rule ${each.key}"
@@ -13,29 +16,19 @@ resource "openstack_networking_secgroup_v2" "security_groups" {
 }
 
 # This takes all of the security group rules and turns them into a plat list that we can run a for_each over
-# The most important step is concat two two tuples that are created from tcp and udp rules, so that we can create
-# overlapping rules for ports without worrying about the name.
 locals {
-  security_group_rule_data = flatten(concat(
-    [for security_group_key, security_group_data in var.security_groups : [
-      for rule in security_group_data.tcp_rules : {
+  security_group_rule_data = flatten([
+    for security_group_key, security_group_data in local.security_group_decoded : [
+      for rule in security_group_data.rules : {
         security_group_key = security_group_key
-        port               = rule
-        protocol           = "tcp"
+        port               = rule.port
+        protocol           = contains(keys(rule), "protocol") ? rule.protocol : "tcp" # Optional parameters
+        direction          = contains(keys(rule), "direction") ? rule.direction : "ingress"
+        ethertype          = contains(keys(rule), "ethertype") ? rule.ethertype : "IPv4"
         description        = security_group_data.description
       }
-      ]
-    ],
-    [for security_group_key, security_group_data in var.security_groups : [
-      for rule in try(security_group_data.udp_rules, []) : {
-        security_group_key = security_group_key
-        port               = rule
-        protocol           = "udp"
-        description        = security_group_data.description
-      }
-      ]
-    ],
-  ))
+    ]
+  ])
 }
 
 # Key [Rule - Port] 
@@ -46,9 +39,9 @@ resource "openstack_networking_secgroup_rule_v2" "security_group_rules" {
   }
 
   description       = each.value.description
-  protocol          = "tcp"
-  direction         = "ingress"
-  ethertype         = "IPv4"
+  protocol          = each.value.protocol
+  direction         = each.value.direction
+  ethertype         = each.value.ethertype
   port_range_min    = each.value.port
   port_range_max    = each.value.port
   security_group_id = openstack_networking_secgroup_v2.security_groups[each.value.security_group_key].id

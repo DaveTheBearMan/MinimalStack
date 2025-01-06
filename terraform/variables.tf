@@ -22,25 +22,3 @@ variable "tenant_name" {
   type        = string
   ephemeral   = true
 }
-
-
-# Minimalstack Network Variables
-variable "subnets" { # DHCP is turned off, unless a particular allocation pool is defined. 
-  description = "Subnets to create for the project"
-  type = map(object({
-    cidr = string
-
-    allocation_pool = optional(map(string)) # optional, sets an address range for dhcp.
-    dns_nameservers = optional(set(string))
-  }))
-}
-
-# Security groups
-variable "security_groups" {
-  description = "Security groups to create"
-  type = map(object({
-    description = optional(string)
-    tcp_rules   = optional(set(number), [])
-    udp_rules   = optional(set(number), [])
-  }))
-}

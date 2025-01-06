@@ -1,0 +1,10 @@
+---
+Boundary DMZ:
+  cidr: '10.0.1.0/24'
+Internal Subnet:
+  cidr: '10.0.2.0/24'
+Nomad Subnet:
+  cidr: '10.0.3.0/24'
+  allocation_pool:
+    start: '10.0.3.100'
+    end: '10.0.3.200'
