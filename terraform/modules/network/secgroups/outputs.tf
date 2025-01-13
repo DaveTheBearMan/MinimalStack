@@ -8,6 +8,6 @@ output "security_group_instances" {
     },
     {
       "default" = "2d53a3f1-2a5f-482d-82f4-9b5e3f6a0bce"
-    } 
+    }
   )
 }

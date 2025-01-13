@@ -9,31 +9,37 @@ variable "instance" {
   description = "Instance to create"
   type = object({
     # Required parameters
-    name = string
+    name        = string
     description = string
-    count = number
+    count       = number
 
     # Block instance parameters
     block_size = number
-    image = string
-  
+    image      = string
+
     # Compute instance parameters
-    flavor_id = string
-    inherited_tags = optional(set(string))
-    tags = optional(set(string))
+    flavor_id      = string
+    inherited_tags = set(string)
+    tags           = set(string)
 
     # Security parameters
     security_groups = optional(set(string))
 
     # Network paramters
     network_id = string
-    subnet_id = string
-    fixed_ip = optional(string)
+    subnet_id  = string
+    fixed_ip   = optional(string)
 
     # Userdata
     user_data = optional(object({
       file = string
       data = map(string)
+    }))
+
+    # Address pairs
+    allowed_address_pairs = optional(object({
+      ip_address  = string
+      mac_address = optional(string)
     }))
   })
 }

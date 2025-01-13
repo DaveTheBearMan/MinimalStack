@@ -8,5 +8,5 @@ export TF_VAR_tenant_name=$OS_PROJECT_NAME
 export TF_VAR_auth_url="https://stack.ritsec.cloud:5000/v3"  # Ensure https
 
 # Alias
-alias runtf="terraform init && terraform validate && terraform plan -out plan.tfplan"
+alias runtf="terraform init && terraform validate && terraform fmt --recursive && terraform plan -out plan.tfplan"
 alias applytf="terraform apply \"plan.tfplan\""

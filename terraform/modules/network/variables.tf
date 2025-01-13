@@ -1,7 +1,7 @@
 # Network Variables
 variable "subnets" { # DHCP is turned off, unless a particular allocation pool is defined. 
   description = "Subnets to create for the project (path to yaml file)"
-  type = string
+  type        = string
 }
 
 variable "security_group_instances" {
@@ -15,5 +15,5 @@ variable "security_group_instances" {
 # Security groups
 variable "security_groups" {
   description = "Security groups to create (path to yaml file)"
-  type = string
+  type        = string
 }

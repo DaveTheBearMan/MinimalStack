@@ -1,5 +1,5 @@
 module "minimalstack_security_groups" {
-  source = "./secgroups"
+  source          = "./secgroups"
   security_groups = var.security_groups
 }
 
