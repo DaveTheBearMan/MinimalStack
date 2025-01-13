@@ -37,7 +37,7 @@ resource "openstack_compute_instance_v2" "hashistack_instance" {
   count = var.instance.count
 
   # Name, flavor, and tags
-  name      = format("%s [%s] - Instance", var.instance.name, count.index)
+  name      = format("%s-%s", var.instance.name, count.index)
   flavor_id = var.instance.flavor_id // assign flavors
   tags      = setunion(var.instance.inherited_tags, var.instance.tags)
 
@@ -61,4 +61,13 @@ resource "openstack_compute_instance_v2" "hashistack_instance" {
   # Add user data (cloud init)
   user_data    = lookup(var.instance, "user_data", null) != null ? templatefile(var.instance.user_data.file, var.instance.user_data.data) : null
   config_drive = true
+}
+
+resource "openstack_networking_floatingip_v2" "public_ip" {
+  pool = lookup(var.instance, "public_ip", null)
+}
+
+resource "openstack_networking_floatingip_associate_v2" "public_ip_association" {
+  floating_ip = lookup(var.instance, "public_ip", null) != null ? openstack_networking_floatingip_v2.public_ip.address : null
+  port_id     = lookup(var.instance, "public_ip", null) != null ? openstack_networking_port_v2.network_ports[0].id : null
 }

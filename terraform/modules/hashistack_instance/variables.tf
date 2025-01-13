@@ -41,5 +41,7 @@ variable "instance" {
       ip_address  = string
       mac_address = optional(string)
     }))
+
+    public_ip = optional(string)
   })
 }

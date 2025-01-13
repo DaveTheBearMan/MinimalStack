@@ -47,3 +47,4 @@ resource "openstack_networking_router_interface_v2" "core_router_interfaces" {
   router_id = openstack_networking_router_v2.core_router.id
   subnet_id = openstack_networking_subnet_v2.core_router_subnets[each.key].id
 }
+
